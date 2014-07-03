@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      >
+    
+    <h:body>
+	    <ui:composition>
+ 				<div id="logo">
+ 					<h:graphicImage value="//resources/logo.jpg" width="300" heigh="300"/>
+ 				</div>
+ 				
+ 				
+				<h:panelGrid columns="4" >
+
+						<h:commandButton id="button" type="submit" value="ProjektUebersicht" image="//resources/liste.png"  />
+						<h:commandButton id="button" value="Accounts" image="//resources/account.png" onclick="//resources/accounthell.png"/>
+						<h:commandButton id="button" value="Accounthinzufügen" image="//resources/account hinzufügen.png"/>
+					
+					<h:panelGrid  id="infosAdmin" columns="1">
+						<h:outputLabel id="willkommen" value="Herzlich Wilkommen!" width="700" heigh="300"/>
+						<h:panelGrid id="infosAdmin" columns="2">
+							<h:outputText value="Sie sind Angemeldet als:" style="font-size: 20px; text-decoration: underline"/>
+							<h:outputText value="Administrator" style="font-weight: bold; font-size: 20px"/> 
+						</h:panelGrid>
+						<h:commandLink id="Ausloggen" value="Logout" action="#{shoppingCartBean.checkout}"/>
+					</h:panelGrid>
+				</h:panelGrid>
+			
+		
+	    </ui:composition>
+    </h:body>
+</html>

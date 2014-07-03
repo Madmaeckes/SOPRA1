@@ -16,15 +16,17 @@
 
 	<div id="page">
 
-		<div id="header">
-			<ui:insert name="header">
-				<ui:include src="header/kundeHeader.xhtml" />
-			</ui:insert>
-		</div>
-
-		<div id="content">
+			<div id="projektUebersicht">
+				<h:panelGrid id="contentUeberschrift" columns="2" border="1">
+ 					<h:outputText value="Projektübersicht:"/>
+ 					<h:commandButton id="buttonKlein" title="Projekt Hinzufügen" type="submit" image="//resources/add.png" style="position: relative; margin: 10% auto;" />
+				</h:panelGrid>
+			</div>
+			
+ 			
+		<div >
 			<ui:insert name="content">
-				<ui:include src="templates/projektliste.xhtml" />
+				<ui:include src="../content/projektVorschau.xhtml" />
 			</ui:insert>
 		</div>
 

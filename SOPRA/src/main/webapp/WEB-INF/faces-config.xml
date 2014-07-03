@@ -16,6 +16,14 @@
 		<display-name>xhtml/login.xhtml</display-name>
 		<from-view-id>/xhtml/login.xhtml</from-view-id>
 		<navigation-case>
+			<from-outcome>Adminitrator</from-outcome>
+			<to-view-id>/xhtml/Administrator.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>xhtml/login.xhtml</display-name>
+		<from-view-id>/xhtml/login.xhtml</from-view-id>
+		<navigation-case>
 			<from-outcome>Kunde</from-outcome>
 			<to-view-id>/xhtml/Kunde.xhtml</to-view-id>
 		</navigation-case>
@@ -24,13 +32,37 @@
 		<display-name>xhtml/login.xhtml</display-name>
 		<from-view-id>/xhtml/login.xhtml</from-view-id>
 		<navigation-case>
+			<from-outcome>ungueltig</from-outcome>
+			<to-view-id>/xhtml/loginFailed.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>xhtml/loginFailed.xhtml</display-name>
+		<from-view-id>/xhtml/loginFailed.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>Analyst</from-outcome>
+			<to-view-id>/xhtml/Analyst.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>xhtml/loginFailed.xhtml</display-name>
+		<from-view-id>/xhtml/loginFailed.xhtml</from-view-id>
+		<navigation-case>
 			<from-outcome>Administrator</from-outcome>
 			<to-view-id>/xhtml/Administrator.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 	<navigation-rule>
-		<display-name>xhtml/login.xhtml</display-name>
-		<from-view-id>/xhtml/login.xhtml</from-view-id>
+		<display-name>xhtml/loginFailed.xhtml</display-name>
+		<from-view-id>/xhtml/loginFailed.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>Kunde</from-outcome>
+			<to-view-id>/xhtml/Kunde.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>xhtml/loginFailed.xhtml</display-name>
+		<from-view-id>/xhtml/loginFailed.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>ungueltig</from-outcome>
 			<to-view-id>/xhtml/loginFailed.xhtml</to-view-id>

@@ -12,7 +12,8 @@
 	<h:body>
         	<div id="login">
         	<h:form>
-        		<h:graphicImage value="/logo.jpg" width="200" heigh="200"/>
+        		<h:graphicImage value="//resources/logo.jpg" width="200" heigh="200"/>
+        		<h:outputText value="Failed!" style="color: red"/>
             	<h:panelGrid id="logingrid" columns="2">
                 	<h:outputText value="Name"></h:outputText>
                 	<h:inputText value="#{loginBean.benutzername}"></h:inputText>
@@ -21,7 +22,6 @@
             	</h:panelGrid>
             	<h:commandButton value="Login" action="#{loginBean.login()}"></h:commandButton>
             </h:form>
-            Login fehlgeschlagen!
         	</div>
     
 	</h:body>

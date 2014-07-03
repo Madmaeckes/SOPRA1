@@ -16,10 +16,9 @@
  			
 			<h:panelGrid id="infos" columns="1">
 				<h:outputLabel id="willkommen" value="Herzlich Wilkommen!" width="700" heigh="300"/>
-				<h:panelGrid id="angemeldetAls" columns="3">
+				<h:panelGrid id="angemeldetAls" columns="2">
 					<h:outputText value="Sie sind Angemeldet als:" style="font-size: 20px; text-decoration: underline"/>
-					<h:outputText value="#{loginBean.benutzername}"/>
-					<h:outputText value="Kunde" style="font-weight: bold; font-size: 20px"/> 
+					<h:outputText value="Analyst" style="font-weight: bold; font-size: 20px"/> 
 				</h:panelGrid>
 				<h:commandLink id="Ausloggen" value="Logout" action="#{shoppingCartBean.checkout}"/>
 			</h:panelGrid>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      >
+    <h:body>
+	    <ui:composition>
+	    	<div id="projektVorschau" style="background-color: rgba(83, 135, 219, .1);">
+	    		<h:panelGrid columns="4" width="1000">
+ 					<h:outputText value="Projekt1hallo döener" style=" font-size: 40px;"/>
+ 					<h:panelGrid columns="2">
+ 						<h:outputText value="Analyst:"/>
+ 						<f:selectItems value="#{loginBean.getBenutzer().getProjekte()}" var="projekt">
+ 							<h:outputText value="#{projekt.bezeichnung}"/>
+ 						</f:selectItems>
+ 						<h:outputText value="Kunde:"/>
+ 						<h:outputText value="Herbert"/>
+ 					</h:panelGrid>
+ 					<h:panelGrid columns="2">
+ 						<h:outputText value="Fortschritt in %:"/>
+ 						<h:outputLabel value="40"/>
+ 						<h:outputText value="Nutzen in %:"/>
+ 						<h:outputLabel value="30"/> 						
+ 					</h:panelGrid>
+ 					<h:commandButton id="buttonKlein" type="submit" image="../../resources/pdf-icon.png"/>
+	    		</h:panelGrid>
+ 			</div>
+ 			
+		
+ 
+	    </ui:composition>
+    </h:body>
+</html>
