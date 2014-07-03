@@ -6,7 +6,7 @@ import benutzer.Analyst;
 
 public class ProjektErstellen {
 	/**
-	 * 
+	 * test
 	 * @param args
 	 * @throws Exception
 	 */
