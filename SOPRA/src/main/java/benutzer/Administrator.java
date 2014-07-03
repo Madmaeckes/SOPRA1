@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 
 /**
  * 
- * 
  */
 @Entity
 @ManagedBean
