@@ -5,6 +5,11 @@ import benutzer.Analyst;
 
 
 public class ProjektErstellen {
+	/**
+	 * 
+	 * @param args
+	 * @throws Exception
+	 */
 
 	public static void main(String[] args) throws Exception {
 
