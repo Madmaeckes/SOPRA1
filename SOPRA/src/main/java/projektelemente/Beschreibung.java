@@ -1,5 +1,6 @@
 package projektelemente;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
@@ -22,24 +23,26 @@ import benutzer.Benutzer;
 @Entity
 @ManagedBean
 @ApplicationScoped
-public class Beschreibung {
+public class Beschreibung implements Serializable{
+
+	private static final long serialVersionUID = 4145272280677827149L;
 
 	@Id
-	private int id;
+	@Temporal(TemporalType.DATE)
+	private Date zeitstempel;
 	
 	private String text;
 	private int bewertung;
-	@Temporal(TemporalType.DATE)
-	private Date zeitstempel;
+	
 	@ManyToOne
 	private Anforderung anforderung;
 	@OneToMany(mappedBy = "beschreibung")
 	private Set<Kommentar> kommentare;
-	
-	Beschreibung (){
 
+	public Beschreibung() {
+		this.zeitstempel = new Date();
 	}
-
+	
 	/**
 	 * Erzeugt einen neuen Kommentar. Hierfür wird ein String (Kommentartext)
 	 * übergeben, sowie der Verfasser als Benutzer-Objekt, sodass ein Objekt der
@@ -55,24 +58,21 @@ public class Beschreibung {
 	}
 
 	/**
-	 * Die Methode erlaubt es Beschreibungen zu bewerten. Dabei wird ihr ein Integer-Wert
-	 * übergeben, der sich auf einer Skala von 1-10 befindet.
+	 * Die Methode erlaubt es Beschreibungen zu bewerten. Dabei wird ihr ein
+	 * Integer-Wert übergeben, der sich auf einer Skala von 1-10 befindet.
 	 * 
 	 * @param bewertung
+	 * @throws IllegalArgumentException
+	 *             wenn der übergebene Wert nicht zwischen 1 und 10 liegt
 	 */
 	public void bewerten(int bewertung) {
-
+		if (bewertung < 1 || bewertung > 10)
+			throw new IllegalArgumentException("Bewertung liegt "
+					+ "ausserhalb des gueltigen Wertebereichs [1,10]");
+		this.bewertung = bewertung; 
 	}
-	
+
 	/* Getter- und Setter-Methoden */
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
 
 	public String getText() {
 		return text;

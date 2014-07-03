@@ -6,10 +6,10 @@ import java.util.Set;
 import javax.faces.bean.*;
 import javax.persistence.*;
 
+import extern.Datenbank;
 
 /**
  * 
- * @author Manuel Weber
  * 
  */
 @Entity
@@ -41,9 +41,26 @@ public class Anforderung {
 	 * die Klasse Benachrichtigung zurückgegriffen.
 	 * 
 	 * @param beschreibung
+	 * 
+	 * @throws IllegalArgumentException
+	 *             wenn kein Beschreibungstext übergeben wird
+	 * @throws Exception
+	 *             wenn der Abnahmestatus der Anforderun nicht "offen" ist
 	 */
-	public void beschreiben(String beschreibung) {
-
+	public void beschreiben(String beschreibungstext) throws Exception {
+		if (beschreibungstext == null)
+			throw new IllegalArgumentException("kein Beschreibungstext uebergeben");
+		if (abnahmestatus != Abnahmestatus.offen)
+			throw new Exception("Einer nicht-offenen Anforderung kann "
+					+ "keine Beschreibung hinzugefuegt werden");
+		Beschreibung b = new Beschreibung();
+		b.setText(beschreibungstext);
+		b.setAnforderung(this);
+		b.setBewertung(0);
+		beschreibungen.add(b);
+		Datenbank.save(this);
+		Datenbank.save(b);
+		System.out.println("Beschreibung hinzugefügt");
 	}
 
 	/**
@@ -54,18 +71,6 @@ public class Anforderung {
 	 * @param abgenommen
 	 */
 	public void abnehmen(boolean abgenommen) {
-
-	}
-
-	/**
-	 * Gibt eine Liste aller Beschreibungen der Anforderung zurück.
-	 * 
-	 * @return ArrayList
-	 */
-	public ArrayList<Beschreibung> getBeschreibungen() {
-
-		ArrayList<Beschreibung> liste = new ArrayList<Beschreibung>();
-		return liste;
 
 	}
 
@@ -82,6 +87,7 @@ public class Anforderung {
 	}
 
 	/* Getter- und Setter-Methoden */
+
 
 	public String getBezeichnung() {
 		return bezeichnung;
@@ -137,6 +143,10 @@ public class Anforderung {
 
 	public void setAlternativeZu(Anforderung alternativeZu) {
 		this.alternativeZu = alternativeZu;
+	}
+
+	public Set<Beschreibung> getBeschreibungen() {
+		return beschreibungen;
 	}
 
 	public void setBeschreibungen(Set<Beschreibung> beschreibungen) {

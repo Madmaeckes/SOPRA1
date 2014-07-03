@@ -6,7 +6,6 @@ import javax.faces.bean.*;
 
 import extern.Datenbank;
 
-
 /**
  * LoginBean.java
  * 
@@ -14,61 +13,67 @@ import extern.Datenbank;
 @ManagedBean
 @SessionScoped
 public class LoginBean {
-	
-    private String benutzername;
-    private String passwort;
 
-    /**
-     * Prüft eingegebene Login-Daten auf Gültigkeit und Accountart.
-     * @return
-     */
-    public String login() {
-    	
-    	List<Benutzer> benutzer = Datenbank.getBenutzer();
-    	System.out.println("(" + benutzer.size() + " Benutzer in DB)");
-    	for (Benutzer b : benutzer){
-    		if(benutzername.compareTo(b.getBenutzername()) == 0) {
-    			System.out.println("Benutzer gefunden: " + benutzername);
-    			if(passwort.compareTo(b.getPasswort()) == 0) {
-    				System.out.println("eingeloggt als " + b.accountart);
-    				return b.accountart;
-    			}
-    			System.out.println("falsches Passwort");
-    			return "ungueltig";
-    		}
-    	}
-    	
-    	System.out.println("Benutzer nicht gefunden: " + benutzername);
-    	return "ungueltig";
-//    	if ((benutzername.compareTo("Manuel") == 0) && (passwort.compareTo("lol") == 0)){
-//    		
-//    		return "login";
-//    	} else {
-//    		System.out.println("ungueltig: " + benutzername );
-//    		return "ungueltig";
-//    	}
-    }
-    
-    public String getBenutzername ()
-    {
-        return benutzername;
-    }
+	private String benutzername;
+	private String passwort;
+	private Benutzer benutzer;
 
+	/**
+	 * Prüft eingegebene Login-Daten auf Gültigkeit und Accountart.
+	 * 
+	 * @return "ungueltig" falls die Login-Daten ungültig sind / die Benutzerart
+	 *         ("Analyst", "Kunde" oder "Administrator") im Falle eines
+	 *         erfolgreichen Logins
+	 */
+	public String login() {
 
-    public void setBenutzername (final String benutzername)
-    {
-        this.benutzername = benutzername;
-    }
+		List<Benutzer> benutzerliste = Datenbank.getBenutzer();
+		System.out.println("(" + benutzerliste.size() + " Benutzer in DB)");
+		for (Benutzer b : benutzerliste) {
+			if (benutzername.compareTo(b.getBenutzername()) == 0) {
+				System.out.println("Benutzer gefunden: " + benutzername);
+				if (passwort.compareTo(b.getPasswort()) == 0) {
+					System.out.println("eingeloggt als " + b.accountart);
+					benutzer = b;
+					return b.accountart;
+				}
+				System.out.println("falsches Passwort");
+				return "ungueltig";
+			}
+		}
 
+		System.out.println("Benutzer nicht gefunden: " + benutzername);
+		return "ungueltig";
+	}
 
-    public String getPasswort ()
-    {
-        return passwort;
-    }
+	/* Getter- und Setter-Methoden */
 
+	public String getBenutzername()
+	{
+		return benutzername;
+	}
 
-    public void setPasswort (final String passwort)
-    {
-        this.passwort = passwort;
-    }
+	public void setBenutzername(final String benutzername)
+	{
+		this.benutzername = benutzername;
+	}
+
+	public String getPasswort()
+	{
+		return passwort;
+	}
+
+	public void setPasswort(final String passwort)
+	{
+		this.passwort = passwort;
+	}
+
+	public Benutzer getBenutzer() {
+		return benutzer;
+	}
+
+	public void setBenutzer(Benutzer benutzer) {
+		this.benutzer = benutzer;
+	}
+
 }
