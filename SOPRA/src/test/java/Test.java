@@ -7,6 +7,10 @@ import benutzer.Kunde;
 
 
 public class Test {
+	/**
+	 * Testkommentar
+	 * @param args
+	 */
 
 	public static void main(String[] args) {
 
