@@ -8,6 +8,8 @@ import javax.faces.bean.*;
 import javax.persistence.*;
 
 import extern.Datenbank;
+import projektelemente.Abnahmestatus;
+import projektelemente.Anforderung;
 import projektelemente.Projekt;
 
 /**
@@ -36,9 +38,10 @@ public class Analyst extends Benutzer {
 	 * mit dem übergebenen Namen erzeugt.
 	 * 
 	 * @param bezeichnung
-	 * @return 
+	 * @return
 	 */
-	public Projekt projektErstellen(String bezeichnung) {
+	public Projekt projektErstellen(String bezeichnung)
+			throws IllegalArgumentException {
 		if (bezeichnung == null)
 			throw new IllegalArgumentException(
 					"Die Bezeichnung des Projektes darf nicht null sein");
@@ -63,7 +66,8 @@ public class Analyst extends Benutzer {
 			System.out.println("neues Projekt erstellt: " + bezeichnung);
 			return p;
 		} catch (Exception e) {
-			System.out.println("Projekt konnte nicht erstellt werden: " + e.getMessage());
+			System.out.println("Projekt konnte nicht erstellt werden: "
+					+ e.getMessage());
 			return null;
 		}
 	}
@@ -76,10 +80,11 @@ public class Analyst extends Benutzer {
 	 * 
 	 * @param kunde
 	 * @param projekt
-	 * @exception IllegalArgumentException
-	 *                wenn kein Kunde / kein Projekt übergeben wird
+	 * @throws IllegalArgumentException
+	 *             wenn kein Kunde / kein Projekt übergeben wird
 	 */
-	public void kundeHinzufügen(Kunde kunde, Projekt projekt) {
+	public void kundeHinzufügen(Kunde kunde, Projekt projekt)
+			throws IllegalArgumentException {
 		if (kunde == null)
 			throw new IllegalArgumentException("Kein Kunde übergeben");
 		if (projekt == null)
@@ -99,13 +104,26 @@ public class Analyst extends Benutzer {
 	 * Kopie als String, welche noch nicht existieren darf.
 	 * 
 	 * @param projekt
-	 * @exception IllegalArgumentException
-	 *                wenn kein Projekt übergeben wird
+	 *            welches kopiert werden soll
+	 * @param bezeichnung
+	 *            des erzugten Projektes
+	 * 
+	 * @throws IllegalArgumentException
+	 *             wenn kein Projekt / keine Bezeichnung übergeben wird oder die
+	 *             gewählte Bezeichnung bereits vergeben ist
 	 */
-	public void projektKopieren(Projekt projekt) {
+	public Projekt projektKopieren(Projekt projekt, String bezeichnung)
+			throws IllegalArgumentException {
 		if (projekt == null)
 			throw new IllegalArgumentException("Kein Projekt übergeben");
 
+		Projekt p = projektErstellen(bezeichnung);
+		p.setAnforderungen(projekt.getAnforderungen());
+		p.setBegriffslexikon(projekt.getBegriffslexikon());
+		for (Anforderung a : p.getAnforderungen()) {
+			a.setAbnahmestatus(Abnahmestatus.offen);
+		}
+		return p;
 	}
 
 	/* Getter- Und Setter-Methoden */

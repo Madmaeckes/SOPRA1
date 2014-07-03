@@ -14,7 +14,6 @@ import projektelemente.Projekt;
  * Administrator bereit.
  * 
  * @author Manuel Weber
- * 
  */
 @MappedSuperclass
 @ManagedBean
@@ -35,23 +34,6 @@ public class Benutzer implements Serializable {
 	protected String telefon;
 	protected String telefonMobil;
 	protected Set<Projekt> projekte;
-	
-	
-	public void save() {
-		EntityManager em = extern.Datenbank.getEntityManager();
-		System.out.println("start save");
-		Benutzer test = new Benutzer();
-		try {
-			em.getTransaction().begin();
-			test.benutzername= "Arnold";
-			test.name= "blablablabla";
-			test = em.merge(test);
-			em.getTransaction().commit();
-			System.out.println("test saved");
-		} catch (Exception e) {
-			em.getTransaction().rollback();
-		}
-	}
 	
 	/* Getter-Methoden */
 	

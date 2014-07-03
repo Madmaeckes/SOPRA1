@@ -1,6 +1,7 @@
 package projektelemente;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -11,7 +12,6 @@ import extern.Datenbank;
 
 /**
  * 
- * @author Manuel Weber
  * 
  */
 @Entity
@@ -51,12 +51,13 @@ public class Projekt {
 	 * uebergeben, der die Bezeichnung der zu erstellenden Anforderung festlegt.
 	 * 
 	 * @param bezeichnung
-	 * @exception IllegalArgumentException
-	 *                wenn keine Bezeichnung übergeben wird oder bereits eine
-	 *                Anforderung mit der uebergebenen Bezeichnung existiert
+	 * @return 
+	 * @throws IllegalArgumentException
+	 *             wenn keine Bezeichnung übergeben wird oder bereits eine
+	 *             Anforderung mit der uebergebenen Bezeichnung existiert
 	 */
-	public void anforderungHinzufuegen(
-			String bezeichnung) {
+	public Anforderung anforderungHinzufuegen(
+			String bezeichnung) throws IllegalArgumentException {
 		if (bezeichnung == null)
 			throw new IllegalArgumentException(
 					"Die Bezeichnung der Anforderung darf nicht null sein");
@@ -76,16 +77,21 @@ public class Projekt {
 			a.setProjekt(this);
 			a.setAbnahmestatus(Abnahmestatus.offen);
 			a.setBezeichnung(bezeichnung);
+			a.setPrioritaet(Prioritaet.mittel);
 			Datenbank.save(a);
+			Datenbank.save(this);
 			System.out.println("neue Anforderung erstellt: " + bezeichnung);
+			return a;
 		} catch (Exception e) {
-			System.out.println("Anforderung konnte nicht erstellt werden " + e.getMessage());
+			System.out.println("Anforderung konnte nicht erstellt werden "
+					+ e.getMessage());
+			return null;
 		}
 	}
 
 	/**
 	 * Mit dieser Methode kann eine alternative Anforderung zu einer anderen
-	 * erstellt werden. Als Ãœbergabewerte benÃ¶tigt die Methode ein Objekt vom
+	 * erstellt werden. Als Ãœbergabewerte benötigt die Methode ein Objekt vom
 	 * Typ Anforderung und eine Bezeichnung der alternativen Anforderung in Form
 	 * eines Strings.
 	 * 
@@ -100,45 +106,80 @@ public class Projekt {
 
 	/**
 	 * Mithilfe dieser Methode kann der Abnahmestatus des Projektes auf
-	 * â€žabgenommenâ€œ (ein Wert des AufzÃ¤hlungstyps Abnahmestatus) gesetzt
-	 * werden. Dies ist nur mÃ¶glich, falls bereits alle Anforderungen des
-	 * Projekts abgeschlossen wurden, d.h. einen von â€žoffenâ€œ verschiedenen
-	 * Abnahmestatus besitzen.
+	 * "abgenommen" (ein Wert des Aufzählungstyps Abnahmestatus) gesetzt werden.
+	 * Dies ist nur möglich, falls bereits alle Anforderungen des Projekts
+	 * abgeschlossen wurden, d.h. einen von "offen" verschiedenen Abnahmestatus
+	 * besitzen.
+	 * 
+	 * @throws Exception
+	 *             wenn das Projekt bereits abgenommen ist, oder noch nicht alle
+	 *             Anforderungen abgenommen sind
 	 */
-	public void abnehmen() {
-
+	public void abnehmen() throws Exception {
+		if (abnahmestatus == Abnahmestatus.abgenommen)
+			throw new Exception("Projekt ist bereits abgenommen");
+		for (Anforderung a : anforderungen) {
+			if (a.getAbnahmestatus() == Abnahmestatus.offen) {
+				throw new Exception(
+						"Es sind noch nicht alle Anforderungen abgenommen");
+			}
+		}
+		abnahmestatus = Abnahmestatus.abgenommen;
 	}
 
-	public ArrayList<Anforderung> getAnforderungen() {
-		ArrayList<Anforderung> liste = new ArrayList<Anforderung>();
+	public Set<Anforderung> getAnforderungen() {
+		Set<Anforderung> liste = new HashSet<Anforderung>();
 		return liste;
 	}
 
 	/**
-	 * Diese Methode berechnet den Fortschritt des Projektes in Prozent.
-	 * HierfÃ¼r wird die Anzahl der bereits abgeschlossenen Anforderungen durch
-	 * die Gesamtanzahl der Anforderungen geteilt, mit 100 multipliziert, auf
-	 * eine ganze Zahl gerundet und als Integer-Wert zurÃ¼ckgegeben
+	 * Diese Methode berechnet den Fortschritt des Projektes in Prozent. Hierfür
+	 * wird die Anzahl der bereits abgeschlossenen Anforderungen durch die
+	 * Gesamtanzahl der Anforderungen geteilt, mit 100 multipliziert, auf eine
+	 * ganze Zahl gerundet und als Integer-Wert zurückgegeben
 	 * 
-	 * @return Integer-Wert fÃ¼r den berechneten Fortschritt
+	 * @return Integer-Wert für den berechneten Fortschritt
 	 */
 	public int berechneFortschritt() {
-
-		return 0;
+		int n = 0; // Anzahl existierender Anforderungen
+		int m = 0; // Anzahl abgenommener Anforderungen
+		for (Anforderung a : anforderungen) {
+			n++;
+			if (a.getAbnahmestatus() == Abnahmestatus.offen) {
+				m++;
+			}
+		}
+		return m / n;
 	}
 
 	/**
 	 * Diese Methode berechnet mit einer Formel einen geschÃ¤tzten Gesamtnutzen
-	 * in Prozent. In die Berechnung gehen die Bewertungen die der Kunde fÃ¼r
-	 * die einzelnen Anforderungen tÃ¤tigt und die PrioritÃ¤t die diese fÃ¼r den
-	 * Nutzer besitzen ein: Formel: âˆ‘ (prioritaet Ã— bewertung) / âˆ‘
-	 * (prioritaet Ã— 10) Ã—100 Wertebereiche: PrioritÃ¤t: niedrig = 1; mittel =
-	 * 3; hoch = 9 Bewertung: [1,â€¦,10]
+	 * in Prozent. In die Berechnung gehen die Bewertungen die der Kunde für die
+	 * einzelnen Anforderungen tätigt und die Priorität die diese für den Nutzer
+	 * besitzen ein.
 	 * 
-	 * @return Integer-Wert fÃ¼r den berechneten Nutzen
+	 * Wertebereiche: Priorität: niedrig = 1; mittel = 3; hoch = 9
+	 * 
+	 * Bewertung: [1,10]
+	 * 
+	 * @return Integer-Wert für den berechneten Nutzen
 	 */
 	public int berechneNutzen() {
-
+		int n = 0; // Anzahl Anforderungen
+		int p = 0; // Summe der Prioritäten aller Anforderungen
+		int b = 0; // Summe der Bewertungen aller Anforderungen
+		for (Anforderung a : anforderungen) {
+			if (a.getAktuelleBeschreibung().getBewertung() > 0) {
+				n++;
+				b += a.getAktuelleBeschreibung().getBewertung();
+				if (a.getPrioritaet() == Prioritaet.niedrig)
+					p += 1;
+				if (a.getPrioritaet() == Prioritaet.mittel)
+					p += 3;
+				if (a.getPrioritaet() == Prioritaet.hoch)
+					p += 9;
+			}
+		}
 		return 0;
 	}
 
@@ -200,7 +241,5 @@ public class Projekt {
 	public void setKunde(benutzer.Kunde kunde) {
 		this.kunde = kunde;
 	}
-	
-	
 
 }
